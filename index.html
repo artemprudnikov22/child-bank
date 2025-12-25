@@ -15,16 +15,43 @@
         :root {
             --primary-color: #6a5acd;
             --primary-light: #7b68ee;
+            --primary-dark: #5a4fcf;
             --secondary-color: #ff6b6b;
             --success-color: #4cd964;
             --warning-color: #ff9500;
+            --danger-color: #ff4757;
             --bg-color: #f5f7ff;
             --card-color: #ffffff;
             --text-color: #333333;
             --text-light: #666666;
-            --border-radius: 20px;
+            --border-radius: 25px;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
+            --dino-color: #8BC34A;
+            --dino-dark: #689F38;
+        }
+
+        /* Стили для Telegram Mini App */
+        body.tg-mode {
+            padding: 0;
+            background: #ffffff;
+        }
+
+        body.tg-mode .container {
+            padding: 15px;
+            max-width: 100%;
+        }
+
+        body.tg-mode .header {
+            padding: 5px 0;
+        }
+
+        body.tg-mode .app-title {
+            font-size: 1.4rem;
+        }
+
+        body.tg-mode .dino-character {
+            font-size: 4rem;
         }
 
         body {
@@ -35,25 +62,70 @@
             padding: 20px;
             max-width: 500px;
             margin: 0 auto;
+            transition: var(--transition);
         }
 
         .container {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
             position: relative;
         }
 
+        /* Шапка */
         .header {
             text-align: center;
             padding: 10px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .header-left {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .header-center {
+            flex: 2;
+            text-align: center;
+        }
+
+        .header-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
         }
 
         .app-title {
             color: var(--primary-color);
-            font-size: 1.5rem;
-            margin-top: 10px;
+            font-size: 1.6rem;
             text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+            line-height: 1.2;
+        }
+
+        .help-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .help-btn:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
         }
 
         .profile-selector {
@@ -65,29 +137,33 @@
             background: white;
             border: 3px solid var(--primary-color);
             border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 1.1rem;
+            padding: 8px 16px;
+            font-size: 1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: var(--transition);
             font-family: inherit;
+            white-space: nowrap;
         }
 
         .btn-profile:hover {
             background: var(--primary-light);
             color: white;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
+        /* Карта с динозавром */
         .card-container {
             position: relative;
             perspective: 1000px;
+            min-height: 220px;
+            margin-top: 10px;
         }
 
         .bank-card {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             border-radius: var(--border-radius);
             padding: 25px;
             color: white;
@@ -96,7 +172,7 @@
             transition: transform 0.6s;
             position: relative;
             overflow: hidden;
-            min-height: 200px;
+            min-height: 220px;
         }
 
         .bank-card::before {
@@ -197,29 +273,30 @@
             font-size: 1.5rem;
         }
 
-        .character {
+        /* Динозаврик поверх карты - опускаем ниже */
+        .dino-overlay {
             position: absolute;
-            top: -30px;
+            top: 10px; /* Опускаем динозавра */
             right: 20px;
             z-index: 10;
-            animation: float 3s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .character-body {
-            font-size: 4rem;
-            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.2));
+        .dino-character {
+            font-size: 4.5rem; /* Немного уменьшаем */
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: var(--transition);
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+            position: relative;
+            z-index: 2;
         }
 
-        .character-body:hover {
-            transform: scale(1.1);
-        }
-
-        .character-message {
+        .dino-message {
             position: absolute;
             top: -40px;
-            right: -20px;
             background: white;
             color: var(--text-color);
             padding: 10px 15px;
@@ -228,8 +305,13 @@
             box-shadow: var(--shadow);
             white-space: nowrap;
             animation: pulse 2s infinite;
+            z-index: 3;
+            text-align: center;
+            max-width: 150px;
+            border: 2px solid var(--primary-light);
         }
 
+        /* Анимации динозавра */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -240,11 +322,54 @@
             50% { transform: scale(1.05); }
         }
 
+        @keyframes happyJump {
+            0%, 100% { transform: translateY(0) scale(1); }
+            30% { transform: translateY(-30px) scale(1.2); }
+            70% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        @keyframes sadShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes penalty {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.8); }
+        }
+
+        .dino-happy {
+            animation: happyJump 0.8s ease, float 3s ease-in-out infinite;
+            color: #4CAF50;
+        }
+
+        .dino-sad {
+            animation: sadShake 0.5s ease, float 3s ease-in-out infinite;
+            color: #f44336;
+        }
+
+        .dino-penalty {
+            animation: penalty 0.5s ease, float 3s ease-in-out infinite;
+            color: #ff6b6b;
+        }
+
+        .dino-spin {
+            animation: spin 1s linear;
+        }
+
+        /* Переключение валюты */
         .currency-selector {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin: 15px 0;
+            margin: 10px 0;
         }
 
         .currency-btn {
@@ -271,21 +396,25 @@
             color: white;
         }
 
+        /* Форма операции */
         .operation-form {
             background: white;
             border-radius: var(--border-radius);
             padding: 25px;
             box-shadow: var(--shadow);
+            margin-bottom: 20px;
         }
 
         .operation-type {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .type-btn {
             flex: 1;
+            min-width: 120px;
             padding: 15px;
             border: none;
             border-radius: 15px;
@@ -309,6 +438,12 @@
             background: #ffebee;
             color: #c62828;
             border: 2px solid #f44336;
+        }
+
+        .type-btn[data-type="penalty"] {
+            background: #fff3e0;
+            color: #e65100;
+            border: 2px solid #ff9800;
         }
 
         .type-btn.active {
@@ -397,7 +532,7 @@
         .btn-submit {
             width: 100%;
             padding: 20px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: white;
             border: none;
             border-radius: 15px;
@@ -421,6 +556,7 @@
             transform: translateY(-2px);
         }
 
+        /* История операций */
         .history-section {
             background: white;
             border-radius: var(--border-radius);
@@ -533,6 +669,11 @@
             color: #f44336;
         }
 
+        .history-amount.penalty {
+            color: #ff9800;
+        }
+
+        /* Панель профилей */
         .profiles-panel {
             position: fixed;
             top: 0;
@@ -673,6 +814,127 @@
             transform: translateY(-3px);
         }
 
+        /* Панель помощи */
+        .help-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: var(--transition);
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .help-panel.active {
+            right: 0;
+        }
+
+        .help-content {
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .help-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f5f5f5;
+        }
+
+        .help-section:last-child {
+            border-bottom: none;
+        }
+
+        .help-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .help-section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .help-section ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .help-section li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .wallet-address {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .wallet-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .bot-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        .bot-link:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .share-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-share {
+            flex: 1;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+
+        .btn-share:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(106, 90, 205, 0.3);
+        }
+
+        /* Анимация баланса */
         @keyframes flipDigit {
             0% {
                 transform: rotateX(0);
@@ -696,6 +958,7 @@
             animation: flipDigit 0.6s ease-out;
         }
 
+        /* Анимация карты */
         @keyframes cardBounce {
             0%, 100% { transform: translateY(0) rotateX(0); }
             25% { transform: translateY(-10px) rotateX(5deg); }
@@ -706,22 +969,50 @@
             animation: cardBounce 0.8s ease;
         }
 
+        /* Для мобильных устройств */
         @media (max-width: 480px) {
             body {
                 padding: 10px;
             }
             
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 5px;
+            }
+            
+            .header-left, .header-center, .header-right {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .app-title {
+                font-size: 1.4rem;
+                margin-top: 5px;
+            }
+            
+            .help-btn {
+                position: absolute;
+                top: 0;
+                right: 10px;
+            }
+            
             .bank-card {
                 padding: 20px;
-                min-height: 180px;
+                min-height: 200px;
+            }
+            
+            .dino-character {
+                font-size: 3.5rem;
+            }
+            
+            .dino-overlay {
+                right: 10px;
+                top: 5px;
             }
             
             .balance-digits {
                 font-size: 2rem;
-            }
-            
-            .character-body {
-                font-size: 3rem;
             }
             
             .operation-form {
@@ -736,6 +1027,12 @@
             .currency-display {
                 font-size: 1.5rem;
                 right: 15px;
+            }
+            
+            .type-btn {
+                min-width: calc(33.333% - 7px);
+                font-size: 1rem;
+                padding: 12px 8px;
             }
             
             .quick-amounts {
@@ -753,6 +1050,7 @@
             }
         }
 
+        /* Прокрутка */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -775,111 +1073,126 @@
 <body>
     <div class="container">
         <header class="header">
-            <div class="profile-selector">
+            <div class="header-left">
                 <button class="btn-profile" id="selectChildBtn">
                     <span id="currentChildAvatar">👦</span>
                     <span id="currentChildName">Выберите ребенка</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
             </div>
-            <h1 class="app-title">Я у мамы предприниматель</h1>
+            <div class="header-center">
+                <h1 class="app-title">Я у мамы предприниматель</h1>
+            </div>
+            <div class="header-right">
+                <button class="help-btn" id="helpBtn">
+                    <i class="fas fa-question"></i>
+                </button>
+            </div>
         </header>
 
-        <main class="main-content">
-            <div class="card-container">
-                <div class="bank-card" id="bankCard">
-                    <div class="card-header">
-                        <div class="card-chip">
-                            <div class="chip-line"></div>
-                            <div class="chip-line"></div>
-                            <div class="chip-line"></div>
-                        </div>
-                        <div class="card-logo">💼</div>
+        <div class="card-container">
+            <div class="bank-card" id="bankCard">
+                <div class="card-header">
+                    <div class="card-chip">
+                        <div class="chip-line"></div>
+                        <div class="chip-line"></div>
+                        <div class="chip-line"></div>
                     </div>
-                    <div class="card-number">•••• •••• •••• <span id="lastDigits">1234</span></div>
-                    <div class="card-holder">
-                        <div class="holder-label">ВЛАДЕЛЕЦ</div>
-                        <div class="holder-name" id="cardHolderName">ИМЯ РЕБЕНКА</div>
-                    </div>
-                    <div class="card-balance">
-                        <div class="balance-label">БАЛАНС</div>
-                        <div class="balance-amount" id="balanceAmount">
-                            <span class="currency-symbol">₽</span>
-                            <span class="balance-digits">0</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="valid-thru">ДЕТСКИЙ БАНК</div>
-                        <div class="mastercard-logo">💳</div>
+                    <div class="card-logo">💼</div>
+                </div>
+                <div class="card-number">•••• •••• •••• <span id="lastDigits">1234</span></div>
+                <div class="card-holder">
+                    <div class="holder-label">ВЛАДЕЛЕЦ</div>
+                    <div class="holder-name" id="cardHolderName">ИМЯ РЕБЕНКА</div>
+                </div>
+                <div class="card-balance">
+                    <div class="balance-label">БАЛАНС</div>
+                    <div class="balance-amount" id="balanceAmount">
+                        <span class="currency-symbol">₽</span>
+                        <span class="balance-digits">0</span>
                     </div>
                 </div>
-                
-                <div class="character" id="character">
-                    <div class="character-body">🤴</div>
-                    <div class="character-message" id="characterMessage">Добавь первую операцию!</div>
+                <div class="card-footer">
+                    <div class="valid-thru">ДЕТСКИЙ БАНК</div>
+                    <div class="mastercard-logo">💳</div>
                 </div>
             </div>
+            
+            <div class="dino-overlay">
+                <div class="dino-message" id="dinoMessage">Добавь первую операцию!</div>
+                <div class="dino-character" id="dinoCharacter">🦖</div>
+            </div>
+        </div>
 
-            <div class="currency-selector">
-                <button class="currency-btn active" data-currency="RUB">
-                    <span class="flag">🇷🇺</span> ₽
+        <div class="currency-selector">
+            <button class="currency-btn active" data-currency="RUB">
+                <span class="flag">🇷🇺</span> ₽
+            </button>
+            <button class="currency-btn" data-currency="USD">
+                <span class="flag">🇺🇸</span> $
+            </button>
+            <button class="currency-btn" data-currency="EUR">
+                <span class="flag">🇪🇺</span> €
+            </button>
+        </div>
+
+        <div class="operation-form">
+            <div class="operation-type">
+                <button class="type-btn active" data-type="income">
+                    <i class="fas fa-plus-circle"></i> Заработал
                 </button>
-                <button class="currency-btn" data-currency="USD">
-                    <span class="flag">🇺🇸</span> $
+                <button class="type-btn" data-type="expense">
+                    <i class="fas fa-minus-circle"></i> Потратил
                 </button>
-                <button class="currency-btn" data-currency="EUR">
-                    <span class="flag">🇪🇺</span> €
+                <button class="type-btn" data-type="penalty">
+                    <i class="fas fa-exclamation-triangle"></i> Штраф
                 </button>
             </div>
+            
+            <div class="amount-input">
+                <input type="number" id="amountInput" placeholder="Сумма" min="0" step="10">
+                <span class="currency-display" id="currencyDisplay">₽</span>
+            </div>
+            
+            <div class="reason-input">
+                <input type="text" id="reasonInput" placeholder="За что? Например: Помыл посуду">
+            </div>
+            
+            <div class="quick-amounts">
+                <button class="quick-amount" data-amount="10">10</button>
+                <button class="quick-amount" data-amount="50">50</button>
+                <button class="quick-amount" data-amount="100">100</button>
+                <button class="quick-amount" data-amount="200">200</button>
+                <button class="quick-amount" data-amount="500">500</button>
+            </div>
+            
+            <button class="btn-submit" id="submitOperation">
+                <i class="fas fa-check"></i> Добавить операцию
+            </button>
+        </div>
 
-            <div class="operation-form">
-                <div class="operation-type">
-                    <button class="type-btn active" data-type="income">
-                        <i class="fas fa-plus-circle"></i> Заработал
-                    </button>
-                    <button class="type-btn" data-type="expense">
-                        <i class="fas fa-minus-circle"></i> Потратил
-                    </button>
-                </div>
-                
-                <div class="amount-input">
-                    <input type="number" id="amountInput" placeholder="Сумма" min="0" step="10">
-                    <span class="currency-display" id="currencyDisplay">₽</span>
-                </div>
-                
-                <div class="reason-input">
-                    <input type="text" id="reasonInput" placeholder="За что? Например: Помыл посуду">
-                </div>
-                
-                <div class="quick-amounts">
-                    <button class="quick-amount" data-amount="10">10</button>
-                    <button class="quick-amount" data-amount="50">50</button>
-                    <button class="quick-amount" data-amount="100">100</button>
-                    <button class="quick-amount" data-amount="200">200</button>
-                    <button class="quick-amount" data-amount="500">500</button>
-                </div>
-                
-                <button class="btn-submit" id="submitOperation">
-                    <i class="fas fa-check"></i> Добавить операцию
+        <div class="share-section">
+            <button class="btn-share" id="shareBtn">
+                <i class="fas fa-share-alt"></i> Поделиться приложением
+            </button>
+        </div>
+
+        <div class="history-section">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i> История операций
+                <button class="btn-clear-history" id="clearHistoryBtn">
+                    <i class="fas fa-trash"></i> Очистить
                 </button>
-            </div>
-
-            <div class="history-section">
-                <h2 class="section-title">
-                    <i class="fas fa-history"></i> История операций
-                    <button class="btn-clear-history" id="clearHistoryBtn">
-                        <i class="fas fa-trash"></i> Очистить
-                    </button>
-                </h2>
-                <div class="history-list" id="historyList">
-                    <div class="empty-history">
-                        <i class="fas fa-book"></i>
-                        <p>Здесь будет история операций</p>
-                    </div>
+            </h2>
+            <div class="history-list" id="historyList">
+                <div class="empty-history">
+                    <i class="fas fa-book"></i>
+                    <p>Здесь будет история операций</p>
                 </div>
             </div>
-        </main>
+        </div>
 
+        <!-- Панель управления профилями -->
         <div class="profiles-panel" id="profilesPanel">
             <div class="panel-header">
                 <h3>Управление детьми</h3>
@@ -895,6 +1208,55 @@
                 </button>
             </div>
         </div>
+
+        <!-- Панель помощи -->
+        <div class="help-panel" id="helpPanel">
+            <div class="panel-header">
+                <h3>Помощь и информация</h3>
+                <button class="btn-close-panel" id="closeHelpBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="help-content">
+                <div class="help-section">
+                    <h3>Зачем это приложение?</h3>
+                    <p>Это приложение помогает детям в игровой форме научиться:</p>
+                    <ul>
+                        <li>Понимать ценность денег и труда</li>
+                        <li>Ставить финансовые цели и копить на них</li>
+                        <li>Быть ответственными за свои решения</li>
+                        <li>Развивать предпринимательское мышление</li>
+                        <li>Учиться считать и планировать бюджет</li>
+                    </ul>
+                    <p>С психологической точки зрения, приложение помогает:</p>
+                    <ul>
+                        <li>Формировать чувство достижения и успеха</li>
+                        <li>Развивать самодисциплину и ответственность</li>
+                        <li>Укреплять связь между усилием и результатом</li>
+                        <li>Повышать самооценку через достижение целей</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>Поблагодарить разработчиков</h3>
+                    <p>Если вам нравится приложение и вы хотите поддержать развитие проекта, вы можете сделать пожертвование:</p>
+                    <div class="wallet-address">
+                        <div class="wallet-title">USDT (сеть TON)</div>
+                        UQDnIYvQ1-q1gQtNfj5hl4jigV3QNqo7EyGuPtsjUew5B0sP
+                    </div>
+                    <p>Спасибо за вашу поддержку! 💜</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>Предложить улучшения</h3>
+                    <p>У вас есть идеи как улучшить приложение? Нашли ошибку? Хотите предложить новую функцию?</p>
+                    <p>Напишите нам в Telegram:</p>
+                    <a href="https://t.me/sonya_asistentka_bot" class="bot-link" target="_blank">
+                        <i class="fab fa-telegram"></i> @sonya_asistentka_bot
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -904,30 +1266,60 @@
                 this.currentChild = null;
                 this.children = this.loadFromStorage('children') || [];
                 this.operations = this.loadFromStorage('operations') || {};
+                this.penaltyAmount = 100; // Фиксированная сумма штрафа
+                this.currentDino = '🦖'; // Тираннозавр по умолчанию
                 this.exchangeRates = {
                     RUB: 1,
                     USD: 0.011,
                     EUR: 0.010
                 };
+                this.dinoStates = ['🦖', '🦕']; // Только тираннозавр и диплодок
+                this.dinoMessages = [
+                    'Ты крут!', 'Продолжай зарабатывать!', 'Ты справишься!',
+                    'У тебя всё получится!', 'Я в тебе верю!', 'Ты будущий миллионер!',
+                    'Каждая копейка важна!', 'Работай умнее!', 'Ты лучше всех!', 'Не сдавайся!'
+                ];
                 
                 this.init();
             }
             
             init() {
+                // Проверяем, открыто ли в Telegram Mini App
+                this.checkTelegramMode();
+                
                 this.setupEventListeners();
                 this.loadProfiles();
                 this.updateUI();
             }
             
+            checkTelegramMode() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('tg1')) {
+                    document.body.classList.add('tg-mode');
+                }
+            }
+            
             setupEventListeners() {
+                // Выбор ребенка
                 document.getElementById('selectChildBtn').addEventListener('click', () => {
                     document.getElementById('profilesPanel').classList.add('active');
                 });
                 
+                // Закрытие панели профилей
                 document.getElementById('closePanelBtn').addEventListener('click', () => {
                     document.getElementById('profilesPanel').classList.remove('active');
                 });
                 
+                // Панель помощи
+                document.getElementById('helpBtn').addEventListener('click', () => {
+                    document.getElementById('helpPanel').classList.add('active');
+                });
+                
+                document.getElementById('closeHelpBtn').addEventListener('click', () => {
+                    document.getElementById('helpPanel').classList.remove('active');
+                });
+                
+                // Добавление профиля
                 document.getElementById('addProfileBtn').addEventListener('click', () => {
                     this.addChild();
                 });
@@ -936,13 +1328,20 @@
                     if (e.key === 'Enter') this.addChild();
                 });
                 
+                // Переключение типа операции
                 document.querySelectorAll('.type-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
                         btn.classList.add('active');
+                        
+                        // Если выбран штраф, подставляем сумму штрафа
+                        if (btn.dataset.type === 'penalty') {
+                            document.getElementById('amountInput').value = this.penaltyAmount;
+                        }
                     });
                 });
                 
+                // Переключение валюты
                 document.querySelectorAll('.currency-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         this.currentCurrency = btn.dataset.currency;
@@ -952,16 +1351,19 @@
                     });
                 });
                 
+                // Быстрая сумма
                 document.querySelectorAll('.quick-amount').forEach(btn => {
                     btn.addEventListener('click', () => {
                         document.getElementById('amountInput').value = btn.dataset.amount;
                     });
                 });
                 
+                // Добавление операции
                 document.getElementById('submitOperation').addEventListener('click', () => {
                     this.addOperation();
                 });
                 
+                // Ввод операции по Enter
                 document.getElementById('amountInput').addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') this.addOperation();
                 });
@@ -970,19 +1372,27 @@
                     if (e.key === 'Enter') this.addOperation();
                 });
                 
+                // Очистка истории
                 document.getElementById('clearHistoryBtn').addEventListener('click', () => {
                     if (confirm('Очистить всю историю операций?')) {
                         if (this.currentChild) {
                             this.operations[this.currentChild.id] = [];
                             this.saveToStorage('operations', this.operations);
                             this.updateHistory();
-                            this.updateCharacterMessage('История очищена!');
+                            this.showDinoMessage('История очищена!', 'sad');
                         }
                     }
                 });
                 
-                document.getElementById('character').addEventListener('click', () => {
-                    this.showRandomCharacterMessage();
+                // Клик по динозавру
+                document.getElementById('dinoCharacter').addEventListener('click', () => {
+                    this.switchDino();
+                    this.showRandomDinoMessage();
+                });
+                
+                // Поделиться
+                document.getElementById('shareBtn').addEventListener('click', () => {
+                    this.shareApp();
                 });
             }
             
@@ -1015,9 +1425,9 @@
                         },
                         {
                             id: '3',
-                            type: 'expense',
-                            amount: 200,
-                            reason: 'Купил мороженое',
+                            type: 'penalty',
+                            amount: 100,
+                            reason: 'Опоздал в школу',
                             date: new Date(Date.now() - 172800000).toISOString()
                         }
                     ];
@@ -1102,7 +1512,7 @@
                 this.selectChild(newChild.id);
                 this.renderProfilesList();
                 document.getElementById('profilesPanel').classList.remove('active');
-                this.updateCharacterMessage(`Привет, ${name}!`);
+                this.showDinoMessage(`Привет, ${name}!`, 'happy');
             }
             
             deleteChild(childId) {
@@ -1123,7 +1533,7 @@
                 this.currentChild = this.children.find(child => child.id === childId);
                 if (this.currentChild) {
                     this.updateUI();
-                    this.updateCharacterMessage(`Привет, ${this.currentChild.name}!`);
+                    this.showDinoMessage(`Привет, ${this.currentChild.name}!`, 'happy');
                 }
             }
             
@@ -1167,10 +1577,16 @@
                 
                 if (type === 'income') {
                     this.currentChild.balance = (this.currentChild.balance || 0) + amount;
-                    this.updateCharacterMessage(`+${amount} ${this.getCurrencySymbol()}! Молодец!`);
-                } else {
+                    this.showDinoMessage(`+${amount} ${this.getCurrencySymbol()}! Молодец!`, 'happy');
+                    this.animateDino('happy');
+                } else if (type === 'expense') {
                     this.currentChild.balance = (this.currentChild.balance || 0) - amount;
-                    this.updateCharacterMessage(`-${amount} ${this.getCurrencySymbol()}... Будь внимательнее!`);
+                    this.showDinoMessage(`-${amount} ${this.getCurrencySymbol()}... Будь внимательнее!`, 'sad');
+                    this.animateDino('sad');
+                } else if (type === 'penalty') {
+                    this.currentChild.balance = (this.currentChild.balance || 0) - amount;
+                    this.showDinoMessage(`Штраф ${amount} ${this.getCurrencySymbol()}!`, 'penalty');
+                    this.animateDino('penalty');
                 }
                 
                 const childIndex = this.children.findIndex(c => c.id === this.currentChild.id);
@@ -1250,7 +1666,7 @@
                     historyItem.className = 'history-item';
                     historyItem.innerHTML = `
                         <div class="history-icon">
-                            ${operation.type === 'income' ? '💵' : '💸'}
+                            ${operation.type === 'income' ? '💵' : operation.type === 'penalty' ? '⚖️' : '💸'}
                         </div>
                         <div class="history-details">
                             <div class="history-reason">${operation.reason}</div>
@@ -1265,45 +1681,92 @@
                 });
             }
             
-            updateCharacterMessage(message) {
-                const characterMessage = document.getElementById('characterMessage');
-                characterMessage.textContent = message;
+            showDinoMessage(message, animation = null) {
+                const dinoMessage = document.getElementById('dinoMessage');
+                dinoMessage.textContent = message;
                 
-                characterMessage.style.animation = 'none';
+                dinoMessage.style.animation = 'none';
                 setTimeout(() => {
-                    characterMessage.style.animation = 'pulse 2s infinite';
+                    dinoMessage.style.animation = 'pulse 2s infinite';
                 }, 10);
+                
+                if (animation) {
+                    this.animateDino(animation);
+                }
                 
                 setTimeout(() => {
                     if (this.currentChild) {
                         const balance = this.currentChild.balance || 0;
                         if (balance > 1000) {
-                            characterMessage.textContent = 'Ты настоящий предприниматель!';
+                            dinoMessage.textContent = 'Ты настоящий предприниматель!';
                         } else if (balance > 0) {
-                            characterMessage.textContent = 'Продолжай в том же духе!';
+                            dinoMessage.textContent = 'Продолжай в том же духе!';
+                        } else if (balance < 0) {
+                            dinoMessage.textContent = 'Осторожнее с тратами!';
                         } else {
-                            characterMessage.textContent = 'Пора заработать!';
+                            dinoMessage.textContent = 'Пора заработать!';
                         }
                     }
                 }, 5000);
             }
             
-            showRandomCharacterMessage() {
-                const messages = [
-                    'Ты крут!',
-                    'Продолжай зарабатывать!',
-                    'Ты справишься!',
-                    'У тебя всё получится!',
-                    'Я в тебе верю!',
-                    'Ты будущий миллионер!',
-                    'Каждая копейка важна!',
-                    'Работай умнее!',
-                    'Ты лучше всех!',
-                    'Не сдавайся!'
-                ];
+            animateDino(animation) {
+                const dino = document.getElementById('dinoCharacter');
+                dino.classList.add(`dino-${animation}`);
                 
-                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                this.updateCharacterMessage(randomMessage);
+                setTimeout(() => {
+                    dino.classList.remove(`dino-${animation}`);
+                }, 1000);
+            }
+            
+            switchDino() {
+                const currentIndex = this.dinoStates.indexOf(this.currentDino);
+                const nextIndex = (currentIndex + 1) % this.dinoStates.length;
+                this.currentDino = this.dinoStates[nextIndex];
+                document.getElementById('dinoCharacter').textContent = this.currentDino;
+            }
+            
+            showRandomDinoMessage() {
+                const randomMessage = this.dinoMessages[Math.floor(Math.random() * this.dinoMessages.length)];
+                this.showDinoMessage(randomMessage, null);
+            }
+            
+            shareApp() {
+                const url = window.location.href;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Я у мамы предприниматель',
+                        text: 'Отличное приложение для обучения детей финансовой грамотности!',
+                        url: url
+                    })
+                    .then(() => console.log('Успешно поделились'))
+                    .catch((error) => {
+                        // Если пользователь отменил или ошибка, копируем в буфер
+                        this.copyToClipboard(url);
+                    });
+                } else {
+                    // Для браузеров без поддержки Web Share API
+                    this.copyToClipboard(url);
+                }
+            }
+            
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        alert('Ссылка скопирована в буфер обмена!');
+                    })
+                    .catch(err => {
+                        console.error('Ошибка копирования: ', err);
+                        // Fallback для старых браузеров
+                        const textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        alert('Ссылка скопирована в буфер обмена!');
+                    });
             }
             
             updateUI() {
@@ -1317,7 +1780,7 @@
                     
                     const balance = this.currentChild.balance || 0;
                     if (balance > 0) {
-                        this.updateCharacterMessage(`Баланс: ${this.formatCurrency(balance)}`);
+                        this.showDinoMessage(`Баланс: ${this.formatCurrency(balance)}`, null);
                     }
                 } else {
                     document.getElementById('currentChildName').textContent = 'Выберите ребенка';
