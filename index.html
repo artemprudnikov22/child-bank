@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Я у мамы предприниматель | Детский банк</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6a5acd;
+            --primary-light: #7b68ee;
+            --secondary-color: #ff6b6b;
+            --success-color: #4cd964;
+            --warning-color: #ff9500;
+            --bg-color: #f5f7ff;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --text-light: #666666;
+            --border-radius: 20px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chilanka', 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(135deg, #f5f7ff 0%, #e3e8ff 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .app-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-top: 10px;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-selector {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-profile {
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .btn-profile:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .card-container {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .bank-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: var(--border-radius);
+            padding: 25px;
+            color: white;
+            box-shadow: var(--shadow);
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+
+        .bank-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            transform: rotate(30deg);
+            opacity: 0.3;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card-chip {
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 5px;
+        }
+
+        .chip-line {
+            height: 3px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 2px;
+        }
+
+        .card-logo {
+            font-size: 2rem;
+        }
+
+        .card-number {
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .card-holder, .card-balance {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .holder-label, .balance-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .holder-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .balance-amount {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .currency-symbol {
+            font-size: 1.5rem;
+        }
+
+        .balance-digits {
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            transition: transform 0.3s ease;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .valid-thru {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .mastercard-logo {
+            font-size: 1.5rem;
+        }
+
+        .character {
+            position: absolute;
+            top: -30px;
+            right: 20px;
+            z-index: 10;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .character-body {
+            font-size: 4rem;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.2));
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .character-body:hover {
+            transform: scale(1.1);
+        }
+
+        .character-message {
+            position: absolute;
+            top: -40px;
+            right: -20px;
+            background: white;
+            color: var(--text-color);
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+            white-space: nowrap;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .currency-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .currency-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--primary-color);
+            background: white;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .currency-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .currency-btn:hover:not(.active) {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .operation-form {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .operation-type {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+
+        .type-btn[data-type="income"] {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #4caf50;
+        }
+
+        .type-btn[data-type="expense"] {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #f44336;
+        }
+
+        .type-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .amount-input {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #amountInput {
+            width: 100%;
+            padding: 20px;
+            font-size: 2.5rem;
+            border: 3px solid var(--primary-color);
+            border-radius: 15px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        #amountInput:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.2);
+        }
+
+        .currency-display {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .reason-input {
+            margin-bottom: 20px;
+        }
+
+        #reasonInput {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        #reasonInput:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .quick-amounts {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .quick-amount {
+            padding: 12px 20px;
+            background: #f0f2ff;
+            border: 2px solid var(--primary-light);
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .quick-amount:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(106, 90, 205, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(-2px);
+        }
+
+        .history-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .btn-clear-history {
+            background: #ffebee;
+            color: #f44336;
+            border: 2px solid #f44336;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+
+        .btn-clear-history:hover {
+            background: #f44336;
+            color: white;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-history i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 2px solid #f5f5f5;
+            animation: slideIn 0.5s ease;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .history-icon {
+            font-size: 1.5rem;
+            width: 40px;
+        }
+
+        .history-details {
+            flex: 1;
+            padding: 0 15px;
+        }
+
+        .history-reason {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .history-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .history-amount.income {
+            color: #4caf50;
+        }
+
+        .history-amount.expense {
+            color: #f44336;
+        }
+
+        .profiles-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: var(--transition);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .profiles-panel.active {
+            right: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #f5f5f5;
+        }
+
+        .btn-close-panel {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .btn-close-panel:hover {
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f9f9ff;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 2px solid #eee;
+            transition: var(--transition);
+        }
+
+        .profile-item.active {
+            border-color: var(--primary-color);
+            background: #f0f2ff;
+        }
+
+        .profile-item:hover {
+            transform: translateX(5px);
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-avatar {
+            font-size: 2rem;
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .profile-balance {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-delete-profile {
+            background: #ffebee;
+            color: #f44336;
+            border: 2px solid #f44336;
+            border-radius: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-delete-profile:hover {
+            background: #f44336;
+            color: white;
+        }
+
+        .add-profile-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 3px solid #f5f5f5;
+        }
+
+        #newChildName {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-family: inherit;
+        }
+
+        .btn-add-profile {
+            padding: 15px 25px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+
+        .btn-add-profile:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        @keyframes flipDigit {
+            0% {
+                transform: rotateX(0);
+                opacity: 1;
+            }
+            50% {
+                transform: rotateX(90deg);
+                opacity: 0;
+            }
+            51% {
+                transform: rotateX(-90deg);
+                opacity: 0;
+            }
+            100% {
+                transform: rotateX(0);
+                opacity: 1;
+            }
+        }
+
+        .flip-animation {
+            animation: flipDigit 0.6s ease-out;
+        }
+
+        @keyframes cardBounce {
+            0%, 100% { transform: translateY(0) rotateX(0); }
+            25% { transform: translateY(-10px) rotateX(5deg); }
+            75% { transform: translateY(5px) rotateX(-2deg); }
+        }
+
+        .card-bounce {
+            animation: cardBounce 0.8s ease;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .bank-card {
+                padding: 20px;
+                min-height: 180px;
+            }
+            
+            .balance-digits {
+                font-size: 2rem;
+            }
+            
+            .character-body {
+                font-size: 3rem;
+            }
+            
+            .operation-form {
+                padding: 20px;
+            }
+            
+            #amountInput {
+                font-size: 2rem;
+                padding: 15px;
+            }
+            
+            .currency-display {
+                font-size: 1.5rem;
+                right: 15px;
+            }
+            
+            .quick-amounts {
+                gap: 5px;
+            }
+            
+            .quick-amount {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+            
+            .btn-submit {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="profile-selector">
+                <button class="btn-profile" id="selectChildBtn">
+                    <span id="currentChildAvatar">👦</span>
+                    <span id="currentChildName">Выберите ребенка</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <h1 class="app-title">Я у мамы предприниматель</h1>
+        </header>
+
+        <main class="main-content">
+            <div class="card-container">
+                <div class="bank-card" id="bankCard">
+                    <div class="card-header">
+                        <div class="card-chip">
+                            <div class="chip-line"></div>
+                            <div class="chip-line"></div>
+                            <div class="chip-line"></div>
+                        </div>
+                        <div class="card-logo">💼</div>
+                    </div>
+                    <div class="card-number">•••• •••• •••• <span id="lastDigits">1234</span></div>
+                    <div class="card-holder">
+                        <div class="holder-label">ВЛАДЕЛЕЦ</div>
+                        <div class="holder-name" id="cardHolderName">ИМЯ РЕБЕНКА</div>
+                    </div>
+                    <div class="card-balance">
+                        <div class="balance-label">БАЛАНС</div>
+                        <div class="balance-amount" id="balanceAmount">
+                            <span class="currency-symbol">₽</span>
+                            <span class="balance-digits">0</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="valid-thru">ДЕТСКИЙ БАНК</div>
+                        <div class="mastercard-logo">💳</div>
+                    </div>
+                </div>
+                
+                <div class="character" id="character">
+                    <div class="character-body">🤴</div>
+                    <div class="character-message" id="characterMessage">Добавь первую операцию!</div>
+                </div>
+            </div>
+
+            <div class="currency-selector">
+                <button class="currency-btn active" data-currency="RUB">
+                    <span class="flag">🇷🇺</span> ₽
+                </button>
+                <button class="currency-btn" data-currency="USD">
+                    <span class="flag">🇺🇸</span> $
+                </button>
+                <button class="currency-btn" data-currency="EUR">
+                    <span class="flag">🇪🇺</span> €
+                </button>
+            </div>
+
+            <div class="operation-form">
+                <div class="operation-type">
+                    <button class="type-btn active" data-type="income">
+                        <i class="fas fa-plus-circle"></i> Заработал
+                    </button>
+                    <button class="type-btn" data-type="expense">
+                        <i class="fas fa-minus-circle"></i> Потратил
+                    </button>
+                </div>
+                
+                <div class="amount-input">
+                    <input type="number" id="amountInput" placeholder="Сумма" min="0" step="10">
+                    <span class="currency-display" id="currencyDisplay">₽</span>
+                </div>
+                
+                <div class="reason-input">
+                    <input type="text" id="reasonInput" placeholder="За что? Например: Помыл посуду">
+                </div>
+                
+                <div class="quick-amounts">
+                    <button class="quick-amount" data-amount="10">10</button>
+                    <button class="quick-amount" data-amount="50">50</button>
+                    <button class="quick-amount" data-amount="100">100</button>
+                    <button class="quick-amount" data-amount="200">200</button>
+                    <button class="quick-amount" data-amount="500">500</button>
+                </div>
+                
+                <button class="btn-submit" id="submitOperation">
+                    <i class="fas fa-check"></i> Добавить операцию
+                </button>
+            </div>
+
+            <div class="history-section">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i> История операций
+                    <button class="btn-clear-history" id="clearHistoryBtn">
+                        <i class="fas fa-trash"></i> Очистить
+                    </button>
+                </h2>
+                <div class="history-list" id="historyList">
+                    <div class="empty-history">
+                        <i class="fas fa-book"></i>
+                        <p>Здесь будет история операций</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="profiles-panel" id="profilesPanel">
+            <div class="panel-header">
+                <h3>Управление детьми</h3>
+                <button class="btn-close-panel" id="closePanelBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="profiles-list" id="profilesList"></div>
+            <div class="add-profile-form">
+                <input type="text" id="newChildName" placeholder="Имя ребенка" maxlength="20">
+                <button class="btn-add-profile" id="addProfileBtn">
+                    <i class="fas fa-plus"></i> Добавить ребенка
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class KidBank {
+            constructor() {
+                this.currentCurrency = 'RUB';
+                this.currentChild = null;
+                this.children = this.loadFromStorage('children') || [];
+                this.operations = this.loadFromStorage('operations') || {};
+                this.exchangeRates = {
+                    RUB: 1,
+                    USD: 0.011,
+                    EUR: 0.010
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.loadProfiles();
+                this.updateUI();
+            }
+            
+            setupEventListeners() {
+                document.getElementById('selectChildBtn').addEventListener('click', () => {
+                    document.getElementById('profilesPanel').classList.add('active');
+                });
+                
+                document.getElementById('closePanelBtn').addEventListener('click', () => {
+                    document.getElementById('profilesPanel').classList.remove('active');
+                });
+                
+                document.getElementById('addProfileBtn').addEventListener('click', () => {
+                    this.addChild();
+                });
+                
+                document.getElementById('newChildName').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addChild();
+                });
+                
+                document.querySelectorAll('.type-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    });
+                });
+                
+                document.querySelectorAll('.currency-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.currentCurrency = btn.dataset.currency;
+                        document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.updateUI();
+                    });
+                });
+                
+                document.querySelectorAll('.quick-amount').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.getElementById('amountInput').value = btn.dataset.amount;
+                    });
+                });
+                
+                document.getElementById('submitOperation').addEventListener('click', () => {
+                    this.addOperation();
+                });
+                
+                document.getElementById('amountInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addOperation();
+                });
+                
+                document.getElementById('reasonInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addOperation();
+                });
+                
+                document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+                    if (confirm('Очистить всю историю операций?')) {
+                        if (this.currentChild) {
+                            this.operations[this.currentChild.id] = [];
+                            this.saveToStorage('operations', this.operations);
+                            this.updateHistory();
+                            this.updateCharacterMessage('История очищена!');
+                        }
+                    }
+                });
+                
+                document.getElementById('character').addEventListener('click', () => {
+                    this.showRandomCharacterMessage();
+                });
+            }
+            
+            loadProfiles() {
+                if (this.children.length === 0) {
+                    const demoChild = {
+                        id: Date.now().toString(),
+                        name: 'Демо Ребенок',
+                        avatar: '👦',
+                        balance: 1000,
+                        createdAt: new Date().toISOString()
+                    };
+                    this.children.push(demoChild);
+                    this.saveToStorage('children', this.children);
+                    
+                    this.operations[demoChild.id] = [
+                        {
+                            id: '1',
+                            type: 'income',
+                            amount: 500,
+                            reason: 'Помыл посуду',
+                            date: new Date().toISOString()
+                        },
+                        {
+                            id: '2',
+                            type: 'income',
+                            amount: 300,
+                            reason: 'Сделал уроки',
+                            date: new Date(Date.now() - 86400000).toISOString()
+                        },
+                        {
+                            id: '3',
+                            type: 'expense',
+                            amount: 200,
+                            reason: 'Купил мороженое',
+                            date: new Date(Date.now() - 172800000).toISOString()
+                        }
+                    ];
+                    this.saveToStorage('operations', this.operations);
+                }
+                
+                if (!this.currentChild && this.children.length > 0) {
+                    this.currentChild = this.children[0];
+                }
+                
+                this.renderProfilesList();
+            }
+            
+            renderProfilesList() {
+                const profilesList = document.getElementById('profilesList');
+                profilesList.innerHTML = '';
+                
+                this.children.forEach(child => {
+                    const childBalance = this.getChildBalance(child.id);
+                    const isActive = this.currentChild && this.currentChild.id === child.id;
+                    
+                    const profileItem = document.createElement('div');
+                    profileItem.className = `profile-item ${isActive ? 'active' : ''}`;
+                    profileItem.innerHTML = `
+                        <div class="profile-info">
+                            <div class="profile-avatar">${child.avatar}</div>
+                            <div>
+                                <div class="profile-name">${child.name}</div>
+                                <div class="profile-balance">${this.formatCurrency(childBalance)}</div>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="btn-delete-profile" data-id="${child.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    profileItem.querySelector('.profile-info').addEventListener('click', () => {
+                        this.selectChild(child.id);
+                        document.getElementById('profilesPanel').classList.remove('active');
+                    });
+                    
+                    profileItem.querySelector('.btn-delete-profile').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (confirm(`Удалить профиль "${child.name}"?`)) {
+                            this.deleteChild(child.id);
+                        }
+                    });
+                    
+                    profilesList.appendChild(profileItem);
+                });
+            }
+            
+            addChild() {
+                const nameInput = document.getElementById('newChildName');
+                const name = nameInput.value.trim();
+                
+                if (name.length < 2 || name.length > 20) {
+                    alert('Имя должно быть от 2 до 20 символов');
+                    return;
+                }
+                
+                const avatars = ['👦', '👧', '🧒', '👶', '🤴', '👸', '🦸', '🦸‍♀️', '🧙', '🧙‍♀️'];
+                const randomAvatar = avatars[Math.floor(Math.random() * avatars.length)];
+                
+                const newChild = {
+                    id: Date.now().toString(),
+                    name: name,
+                    avatar: randomAvatar,
+                    balance: 0,
+                    createdAt: new Date().toISOString()
+                };
+                
+                this.children.push(newChild);
+                this.saveToStorage('children', this.children);
+                
+                this.operations[newChild.id] = [];
+                this.saveToStorage('operations', this.operations);
+                
+                nameInput.value = '';
+                this.selectChild(newChild.id);
+                this.renderProfilesList();
+                document.getElementById('profilesPanel').classList.remove('active');
+                this.updateCharacterMessage(`Привет, ${name}!`);
+            }
+            
+            deleteChild(childId) {
+                this.children = this.children.filter(child => child.id !== childId);
+                delete this.operations[childId];
+                
+                if (this.currentChild && this.currentChild.id === childId) {
+                    this.currentChild = this.children.length > 0 ? this.children[0] : null;
+                }
+                
+                this.saveToStorage('children', this.children);
+                this.saveToStorage('operations', this.operations);
+                this.renderProfilesList();
+                this.updateUI();
+            }
+            
+            selectChild(childId) {
+                this.currentChild = this.children.find(child => child.id === childId);
+                if (this.currentChild) {
+                    this.updateUI();
+                    this.updateCharacterMessage(`Привет, ${this.currentChild.name}!`);
+                }
+            }
+            
+            addOperation() {
+                if (!this.currentChild) {
+                    alert('Сначала выберите ребенка!');
+                    return;
+                }
+                
+                const amountInput = document.getElementById('amountInput');
+                const reasonInput = document.getElementById('reasonInput');
+                const typeBtn = document.querySelector('.type-btn.active');
+                
+                const amount = parseInt(amountInput.value);
+                const reason = reasonInput.value.trim();
+                const type = typeBtn.dataset.type;
+                
+                if (!amount || amount <= 0) {
+                    alert('Введите корректную сумму!');
+                    return;
+                }
+                
+                if (!reason) {
+                    alert('Введите причину операции!');
+                    return;
+                }
+                
+                const operation = {
+                    id: Date.now().toString(),
+                    type: type,
+                    amount: amount,
+                    reason: reason,
+                    date: new Date().toISOString()
+                };
+                
+                if (!this.operations[this.currentChild.id]) {
+                    this.operations[this.currentChild.id] = [];
+                }
+                this.operations[this.currentChild.id].unshift(operation);
+                this.saveToStorage('operations', this.operations);
+                
+                if (type === 'income') {
+                    this.currentChild.balance = (this.currentChild.balance || 0) + amount;
+                    this.updateCharacterMessage(`+${amount} ${this.getCurrencySymbol()}! Молодец!`);
+                } else {
+                    this.currentChild.balance = (this.currentChild.balance || 0) - amount;
+                    this.updateCharacterMessage(`-${amount} ${this.getCurrencySymbol()}... Будь внимательнее!`);
+                }
+                
+                const childIndex = this.children.findIndex(c => c.id === this.currentChild.id);
+                if (childIndex !== -1) {
+                    this.children[childIndex] = this.currentChild;
+                    this.saveToStorage('children', this.children);
+                }
+                
+                amountInput.value = '';
+                reasonInput.value = '';
+                
+                this.animateBalanceChange();
+                this.updateHistory();
+                
+                document.getElementById('bankCard').classList.add('card-bounce');
+                setTimeout(() => {
+                    document.getElementById('bankCard').classList.remove('card-bounce');
+                }, 800);
+            }
+            
+            animateBalanceChange() {
+                const balanceDigits = document.querySelector('.balance-digits');
+                balanceDigits.classList.add('flip-animation');
+                
+                setTimeout(() => {
+                    balanceDigits.classList.remove('flip-animation');
+                }, 600);
+                
+                this.updateBalanceDisplay();
+            }
+            
+            updateBalanceDisplay() {
+                const balanceElement = document.getElementById('balanceAmount');
+                const balance = this.currentChild ? (this.currentChild.balance || 0) : 0;
+                const convertedBalance = this.convertCurrency(balance);
+                
+                balanceElement.querySelector('.balance-digits').textContent = convertedBalance.toLocaleString('ru-RU', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+                
+                balanceElement.querySelector('.currency-symbol').textContent = this.getCurrencySymbol();
+                document.getElementById('currencyDisplay').textContent = this.getCurrencySymbol();
+                
+                document.getElementById('lastDigits').textContent = 
+                    Math.floor(1000 + Math.random() * 9000);
+            }
+            
+            updateHistory() {
+                const historyList = document.getElementById('historyList');
+                
+                if (!this.currentChild || !this.operations[this.currentChild.id] || this.operations[this.currentChild.id].length === 0) {
+                    historyList.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-book"></i>
+                            <p>Нет операций. Добавьте первую!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                historyList.innerHTML = '';
+                const childOperations = this.operations[this.currentChild.id];
+                
+                childOperations.forEach(operation => {
+                    const operationDate = new Date(operation.date);
+                    const formattedDate = operationDate.toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const convertedAmount = this.convertCurrency(operation.amount);
+                    
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <div class="history-icon">
+                            ${operation.type === 'income' ? '💵' : '💸'}
+                        </div>
+                        <div class="history-details">
+                            <div class="history-reason">${operation.reason}</div>
+                            <div class="history-date">${formattedDate}</div>
+                        </div>
+                        <div class="history-amount ${operation.type}">
+                            ${operation.type === 'income' ? '+' : '-'}${convertedAmount} ${this.getCurrencySymbol()}
+                        </div>
+                    `;
+                    
+                    historyList.appendChild(historyItem);
+                });
+            }
+            
+            updateCharacterMessage(message) {
+                const characterMessage = document.getElementById('characterMessage');
+                characterMessage.textContent = message;
+                
+                characterMessage.style.animation = 'none';
+                setTimeout(() => {
+                    characterMessage.style.animation = 'pulse 2s infinite';
+                }, 10);
+                
+                setTimeout(() => {
+                    if (this.currentChild) {
+                        const balance = this.currentChild.balance || 0;
+                        if (balance > 1000) {
+                            characterMessage.textContent = 'Ты настоящий предприниматель!';
+                        } else if (balance > 0) {
+                            characterMessage.textContent = 'Продолжай в том же духе!';
+                        } else {
+                            characterMessage.textContent = 'Пора заработать!';
+                        }
+                    }
+                }, 5000);
+            }
+            
+            showRandomCharacterMessage() {
+                const messages = [
+                    'Ты крут!',
+                    'Продолжай зарабатывать!',
+                    'Ты справишься!',
+                    'У тебя всё получится!',
+                    'Я в тебе верю!',
+                    'Ты будущий миллионер!',
+                    'Каждая копейка важна!',
+                    'Работай умнее!',
+                    'Ты лучше всех!',
+                    'Не сдавайся!'
+                ];
+                
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                this.updateCharacterMessage(randomMessage);
+            }
+            
+            updateUI() {
+                if (this.currentChild) {
+                    document.getElementById('currentChildName').textContent = this.currentChild.name;
+                    document.getElementById('currentChildAvatar').textContent = this.currentChild.avatar;
+                    document.getElementById('cardHolderName').textContent = this.currentChild.name.toUpperCase();
+                    
+                    this.updateBalanceDisplay();
+                    this.updateHistory();
+                    
+                    const balance = this.currentChild.balance || 0;
+                    if (balance > 0) {
+                        this.updateCharacterMessage(`Баланс: ${this.formatCurrency(balance)}`);
+                    }
+                } else {
+                    document.getElementById('currentChildName').textContent = 'Выберите ребенка';
+                    document.getElementById('cardHolderName').textContent = 'ВЫБЕРИТЕ РЕБЕНКА';
+                    document.getElementById('balanceAmount').querySelector('.balance-digits').textContent = '0';
+                    document.getElementById('historyList').innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-book"></i>
+                            <p>Добавьте ребенка, чтобы начать</p>
+                        </div>
+                    `;
+                }
+                
+                this.renderProfilesList();
+            }
+            
+            getChildBalance(childId) {
+                const childOperations = this.operations[childId];
+                if (!childOperations) return 0;
+                
+                return childOperations.reduce((total, op) => {
+                    return op.type === 'income' ? total + op.amount : total - op.amount;
+                }, 0);
+            }
+            
+            convertCurrency(amount) {
+                const rate = this.exchangeRates[this.currentCurrency];
+                return Math.round(amount * rate);
+            }
+            
+            getCurrencySymbol() {
+                switch(this.currentCurrency) {
+                    case 'USD': return '$';
+                    case 'EUR': return '€';
+                    default: return '₽';
+                }
+            }
+            
+            formatCurrency(amount) {
+                const convertedAmount = this.convertCurrency(amount);
+                return `${convertedAmount.toLocaleString('ru-RU')} ${this.getCurrencySymbol()}`;
+            }
+            
+            saveToStorage(key, data) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                    return true;
+                } catch (error) {
+                    console.error('Ошибка сохранения в localStorage:', error);
+                    return false;
+                }
+            }
+            
+            loadFromStorage(key) {
+                try {
+                    const data = localStorage.getItem(key);
+                    return data ? JSON.parse(data) : null;
+                } catch (error) {
+                    console.error('Ошибка загрузки из localStorage:', error);
+                    return null;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.kidBank = new KidBank();
+        });
+    </script>
+</body>
+</html>
