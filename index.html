@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Я у мамы предприниматель | Детский банк</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Подключаем красивый шрифт через Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -51,11 +53,45 @@
         }
 
         body.tg-mode .dino-character {
-            font-size: 4rem;
+            font-size: 3.5rem;
+        }
+
+        body.tg-mode .type-btn {
+            font-size: 0.95rem;
+            padding: 12px 5px;
+            min-width: calc(33.333% - 10px);
+        }
+
+        body.tg-mode .quick-amount {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        body.tg-mode #amountInput {
+            font-size: 1.8rem;
+            padding: 15px;
+        }
+
+        body.tg-mode .currency-display {
+            font-size: 1.5rem;
+            right: 15px;
+        }
+
+        body.tg-mode .btn-submit {
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        body.tg-mode .dino-message {
+            white-space: normal;
+            max-width: 120px;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            word-break: break-word;
         }
 
         body {
-            font-family: 'Comic Sans MS', 'Chilanka', 'Arial Rounded MT Bold', sans-serif;
+            font-family: 'Nunito', 'Comic Neue', 'Comic Sans MS', 'Chilanka', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #f5f7ff 0%, #e3e8ff 100%);
             color: var(--text-color);
             min-height: 100vh;
@@ -63,6 +99,8 @@
             max-width: 500px;
             margin: 0 auto;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
@@ -105,6 +143,8 @@
             font-size: 1.6rem;
             text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
             line-height: 1.2;
+            font-weight: 900;
+            font-family: 'Nunito', 'Comic Neue', sans-serif;
         }
 
         .help-btn {
@@ -146,6 +186,7 @@
             transition: var(--transition);
             font-family: inherit;
             white-space: nowrap;
+            font-weight: 700;
         }
 
         .btn-profile:hover {
@@ -214,13 +255,16 @@
 
         .card-logo {
             font-size: 2rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
         }
 
         .card-number {
             font-size: 1.3rem;
             letter-spacing: 2px;
             margin-bottom: 20px;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
         }
 
         .card-holder, .card-balance {
@@ -233,11 +277,13 @@
         .holder-label, .balance-label {
             font-size: 0.7rem;
             opacity: 0.8;
+            font-weight: 700;
         }
 
         .holder-name {
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 900;
+            font-family: 'Nunito', sans-serif;
         }
 
         .balance-amount {
@@ -248,11 +294,12 @@
 
         .currency-symbol {
             font-size: 1.5rem;
+            font-weight: 900;
         }
 
         .balance-digits {
             font-size: 2.5rem;
-            font-weight: bold;
+            font-weight: 900;
             font-family: 'Courier New', monospace;
             transition: transform 0.3s ease;
         }
@@ -267,6 +314,7 @@
         .valid-thru {
             font-size: 0.8rem;
             opacity: 0.8;
+            font-weight: 700;
         }
 
         .mastercard-logo {
@@ -276,7 +324,7 @@
         /* Динозаврик поверх карты - опускаем ниже */
         .dino-overlay {
             position: absolute;
-            top: 10px; /* Опускаем динозавра */
+            top: 15px; /* Опускаем динозавра */
             right: 20px;
             z-index: 10;
             display: flex;
@@ -285,30 +333,37 @@
         }
 
         .dino-character {
-            font-size: 4.5rem; /* Немного уменьшаем */
+            font-size: 4rem; /* Немного уменьшаем */
             cursor: pointer;
             transition: var(--transition);
             animation: float 3s ease-in-out infinite;
             filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
             position: relative;
             z-index: 2;
+            line-height: 1;
         }
 
         .dino-message {
             position: absolute;
-            top: -40px;
+            top: -45px;
             background: white;
             color: var(--text-color);
-            padding: 10px 15px;
+            padding: 10px 12px;
             border-radius: 15px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             box-shadow: var(--shadow);
-            white-space: nowrap;
             animation: pulse 2s infinite;
             z-index: 3;
             text-align: center;
-            max-width: 150px;
+            max-width: 140px;
+            min-width: 120px;
             border: 2px solid var(--primary-light);
+            font-weight: 700;
+            word-wrap: break-word;
+            white-space: normal;
+            line-height: 1.3;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         /* Анимации динозавра */
@@ -384,6 +439,7 @@
             align-items: center;
             gap: 8px;
             font-family: inherit;
+            font-weight: 700;
         }
 
         .currency-btn.active {
@@ -407,43 +463,46 @@
 
         .operation-type {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .type-btn {
             flex: 1;
-            min-width: 120px;
-            padding: 15px;
-            border: none;
+            min-width: calc(33.333% - 10px);
+            padding: 15px 8px;
+            border: 2px solid transparent;
             border-radius: 15px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             font-family: inherit;
+            font-weight: 700;
+            text-align: center;
         }
 
         .type-btn[data-type="income"] {
             background: #e8f5e9;
             color: #2e7d32;
-            border: 2px solid #4caf50;
+            border-color: #4caf50;
         }
 
         .type-btn[data-type="expense"] {
             background: #ffebee;
             color: #c62828;
-            border: 2px solid #f44336;
+            border-color: #f44336;
         }
 
         .type-btn[data-type="penalty"] {
             background: #fff3e0;
             color: #e65100;
-            border: 2px solid #ff9800;
+            border-color: #ff9800;
         }
 
         .type-btn.active {
@@ -464,7 +523,7 @@
             border-radius: 15px;
             text-align: center;
             font-family: 'Courier New', monospace;
-            font-weight: bold;
+            font-weight: 900;
             transition: var(--transition);
         }
 
@@ -480,7 +539,7 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 2rem;
-            font-weight: bold;
+            font-weight: 900;
             color: var(--primary-color);
         }
 
@@ -496,6 +555,7 @@
             border-radius: 15px;
             font-family: inherit;
             transition: var(--transition);
+            font-weight: 700;
         }
 
         #reasonInput:focus {
@@ -517,10 +577,13 @@
             border: 2px solid var(--primary-light);
             border-radius: 15px;
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 900;
             cursor: pointer;
             transition: var(--transition);
             font-family: inherit;
+            flex: 1;
+            min-width: calc(20% - 8px);
+            text-align: center;
         }
 
         .quick-amount:hover {
@@ -537,7 +600,7 @@
             border: none;
             border-radius: 15px;
             font-size: 1.3rem;
-            font-weight: bold;
+            font-weight: 900;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
@@ -572,6 +635,7 @@
             margin-bottom: 20px;
             color: var(--primary-color);
             font-size: 1.3rem;
+            font-weight: 900;
         }
 
         .btn-clear-history {
@@ -587,6 +651,7 @@
             align-items: center;
             gap: 5px;
             font-family: inherit;
+            font-weight: 700;
         }
 
         .btn-clear-history:hover {
@@ -646,18 +711,20 @@
         }
 
         .history-reason {
-            font-weight: bold;
+            font-weight: 900;
             margin-bottom: 5px;
+            font-size: 1.1rem;
         }
 
         .history-date {
             font-size: 0.8rem;
             color: var(--text-light);
+            font-weight: 700;
         }
 
         .history-amount {
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 900;
             font-family: 'Courier New', monospace;
         }
 
@@ -748,12 +815,12 @@
 
         .profile-name {
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 900;
         }
 
         .profile-balance {
             font-family: 'Courier New', monospace;
-            font-weight: bold;
+            font-weight: 900;
             color: var(--primary-color);
         }
 
@@ -792,6 +859,7 @@
             border-radius: 15px;
             font-size: 1.1rem;
             font-family: inherit;
+            font-weight: 700;
         }
 
         .btn-add-profile {
@@ -807,6 +875,7 @@
             align-items: center;
             gap: 10px;
             font-family: inherit;
+            font-weight: 700;
         }
 
         .btn-add-profile:hover {
@@ -853,12 +922,14 @@
             color: var(--primary-color);
             margin-bottom: 15px;
             font-size: 1.4rem;
+            font-weight: 900;
         }
 
         .help-section p {
             line-height: 1.6;
             margin-bottom: 15px;
             color: var(--text-color);
+            font-weight: 700;
         }
 
         .help-section ul {
@@ -869,6 +940,7 @@
         .help-section li {
             margin-bottom: 8px;
             line-height: 1.5;
+            font-weight: 700;
         }
 
         .wallet-address {
@@ -880,10 +952,11 @@
             margin: 15px 0;
             border: 1px solid #ddd;
             text-align: center;
+            font-weight: 700;
         }
 
         .wallet-title {
-            font-weight: bold;
+            font-weight: 900;
             color: var(--primary-color);
             margin-bottom: 5px;
             font-size: 1.1rem;
@@ -896,7 +969,7 @@
             padding: 10px 20px;
             border-radius: 10px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 900;
             margin-top: 10px;
             transition: var(--transition);
         }
@@ -927,6 +1000,7 @@
             justify-content: center;
             gap: 10px;
             font-family: inherit;
+            font-weight: 900;
         }
 
         .btn-share:hover {
@@ -976,25 +1050,32 @@
             }
             
             .header {
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                gap: 5px;
                 margin-bottom: 5px;
             }
             
             .header-left, .header-center, .header-right {
-                width: 100%;
+                width: auto;
                 justify-content: center;
             }
             
             .app-title {
-                font-size: 1.4rem;
-                margin-top: 5px;
+                font-size: 1.3rem;
+                margin-top: 0;
+                line-height: 1.1;
+            }
+            
+            .btn-profile {
+                padding: 6px 12px;
+                font-size: 0.9rem;
             }
             
             .help-btn {
-                position: absolute;
-                top: 0;
-                right: 10px;
+                position: static;
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
             }
             
             .bank-card {
@@ -1003,12 +1084,20 @@
             }
             
             .dino-character {
-                font-size: 3.5rem;
+                font-size: 3rem;
             }
             
             .dino-overlay {
                 right: 10px;
-                top: 5px;
+                top: 10px;
+            }
+            
+            .dino-message {
+                max-width: 110px;
+                min-width: 100px;
+                font-size: 0.75rem;
+                padding: 6px 8px;
+                top: -40px;
             }
             
             .balance-digits {
@@ -1030,9 +1119,10 @@
             }
             
             .type-btn {
-                min-width: calc(33.333% - 7px);
-                font-size: 1rem;
-                padding: 12px 8px;
+                min-width: calc(33.333% - 5px);
+                font-size: 0.9rem;
+                padding: 10px 5px;
+                gap: 5px;
             }
             
             .quick-amounts {
@@ -1040,8 +1130,9 @@
             }
             
             .quick-amount {
-                padding: 10px 15px;
-                font-size: 1rem;
+                padding: 8px 10px;
+                font-size: 0.9rem;
+                min-width: calc(20% - 4px);
             }
             
             .btn-submit {
@@ -1098,7 +1189,7 @@
                         <div class="chip-line"></div>
                         <div class="chip-line"></div>
                     </div>
-                    <div class="card-logo">💼</div>
+                    <div class="card-logo">💰</div>
                 </div>
                 <div class="card-number">•••• •••• •••• <span id="lastDigits">1234</span></div>
                 <div class="card-holder">
@@ -1120,7 +1211,7 @@
             
             <div class="dino-overlay">
                 <div class="dino-message" id="dinoMessage">Добавь первую операцию!</div>
-                <div class="dino-character" id="dinoCharacter">🦖</div>
+                <div class="dino-character" id="dinoCharacter">🦕</div>
             </div>
         </div>
 
@@ -1267,13 +1358,12 @@
                 this.children = this.loadFromStorage('children') || [];
                 this.operations = this.loadFromStorage('operations') || {};
                 this.penaltyAmount = 100; // Фиксированная сумма штрафа
-                this.currentDino = '🦖'; // Тираннозавр по умолчанию
+                this.currentDino = '🦕'; // Только диплодок
                 this.exchangeRates = {
                     RUB: 1,
                     USD: 0.011,
                     EUR: 0.010
                 };
-                this.dinoStates = ['🦖', '🦕']; // Только тираннозавр и диплодок
                 this.dinoMessages = [
                     'Ты крут!', 'Продолжай зарабатывать!', 'Ты справишься!',
                     'У тебя всё получится!', 'Я в тебе верю!', 'Ты будущий миллионер!',
@@ -1296,6 +1386,8 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.has('tg1')) {
                     document.body.classList.add('tg-mode');
+                    // Устанавливаем правильный шрифт для Telegram
+                    document.body.style.fontFamily = "'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif";
                 }
             }
             
@@ -1386,7 +1478,6 @@
                 
                 // Клик по динозавру
                 document.getElementById('dinoCharacter').addEventListener('click', () => {
-                    this.switchDino();
                     this.showRandomDinoMessage();
                 });
                 
@@ -1719,42 +1810,35 @@
                 }, 1000);
             }
             
-            switchDino() {
-                const currentIndex = this.dinoStates.indexOf(this.currentDino);
-                const nextIndex = (currentIndex + 1) % this.dinoStates.length;
-                this.currentDino = this.dinoStates[nextIndex];
-                document.getElementById('dinoCharacter').textContent = this.currentDino;
-            }
-            
             showRandomDinoMessage() {
                 const randomMessage = this.dinoMessages[Math.floor(Math.random() * this.dinoMessages.length)];
                 this.showDinoMessage(randomMessage, null);
             }
             
             shareApp() {
-                const url = window.location.href;
+                const appUrl = 'https://t.me/child_bank_bot';
                 
                 if (navigator.share) {
                     navigator.share({
                         title: 'Я у мамы предприниматель',
                         text: 'Отличное приложение для обучения детей финансовой грамотности!',
-                        url: url
+                        url: appUrl
                     })
                     .then(() => console.log('Успешно поделились'))
                     .catch((error) => {
                         // Если пользователь отменил или ошибка, копируем в буфер
-                        this.copyToClipboard(url);
+                        this.copyToClipboard(appUrl);
                     });
                 } else {
                     // Для браузеров без поддержки Web Share API
-                    this.copyToClipboard(url);
+                    this.copyToClipboard(appUrl);
                 }
             }
             
             copyToClipboard(text) {
                 navigator.clipboard.writeText(text)
                     .then(() => {
-                        alert('Ссылка скопирована в буфер обмена!');
+                        alert('Ссылка на приложение скопирована в буфер обмена!');
                     })
                     .catch(err => {
                         console.error('Ошибка копирования: ', err);
@@ -1765,7 +1849,7 @@
                         textArea.select();
                         document.execCommand('copy');
                         document.body.removeChild(textArea);
-                        alert('Ссылка скопирована в буфер обмена!');
+                        alert('Ссылка на приложение скопирована в буфер обмена!');
                     });
             }
             
