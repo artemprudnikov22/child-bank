@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -101,6 +102,13 @@
             transition: var(--transition);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            touch-action: manipulation;
+        }
+
+        /* Скрытие клавиатуры при клике на пустое место */
+        body {
+            position: relative;
+            min-height: 100vh;
         }
 
         .container {
@@ -445,6 +453,8 @@
         .currency-btn.active {
             background: var(--primary-color);
             color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(106, 90, 205, 0.2);
         }
 
         .currency-btn:hover:not(.active) {
@@ -452,7 +462,7 @@
             color: white;
         }
 
-        /* Форма операции */
+        /* Форма операции - МЕНЯЕМ ПОРЯДОК */
         .operation-form {
             background: white;
             border-radius: var(--border-radius);
@@ -505,9 +515,52 @@
             border-color: #ff9800;
         }
 
+        /* Подсветка выбранного типа операции как у валюты */
         .type-btn.active {
+            background: var(--primary-color);
+            color: white;
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+
+        .type-btn.active[data-type="income"] {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+
+        .type-btn.active[data-type="expense"] {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .type-btn.active[data-type="penalty"] {
+            background: #ff9800;
+            color: white;
+            border-color: #ff9800;
+        }
+
+        /* Поменяли порядок: сначала причина, потом сумма */
+        .reason-input {
+            margin-bottom: 20px;
+        }
+
+        #reasonInput {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            font-family: inherit;
+            transition: var(--transition);
+            font-weight: 700;
+        }
+
+        #reasonInput:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
 
         .amount-input {
@@ -541,26 +594,6 @@
             font-size: 2rem;
             font-weight: 900;
             color: var(--primary-color);
-        }
-
-        .reason-input {
-            margin-bottom: 20px;
-        }
-
-        #reasonInput {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.1rem;
-            border: 2px solid #ddd;
-            border-radius: 15px;
-            font-family: inherit;
-            transition: var(--transition);
-            font-weight: 700;
-        }
-
-        #reasonInput:focus {
-            outline: none;
-            border-color: var(--primary-color);
         }
 
         .quick-amounts {
@@ -619,7 +652,7 @@
             transform: translateY(-2px);
         }
 
-        /* История операций */
+        /* История операций с фильтрами */
         .history-section {
             background: white;
             border-radius: var(--border-radius);
@@ -636,6 +669,47 @@
             color: var(--primary-color);
             font-size: 1.3rem;
             font-weight: 900;
+        }
+
+        .history-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 15px;
+            background: #f0f2ff;
+            border: 2px solid var(--primary-light);
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            flex: 1;
+            min-width: calc(25% - 8px);
+            text-align: center;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(106, 90, 205, 0.2);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
         .btn-clear-history {
@@ -683,6 +757,7 @@
             padding: 15px;
             border-bottom: 2px solid #f5f5f5;
             animation: slideIn 0.5s ease;
+            position: relative;
         }
 
         .history-item:last-child {
@@ -738,6 +813,25 @@
 
         .history-amount.penalty {
             color: #ff9800;
+        }
+
+        /* Кнопка удаления операции */
+        .history-delete-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0.7;
+            padding: 5px;
+            margin-left: 10px;
+        }
+
+        .history-delete-btn:hover {
+            color: #f44336;
+            opacity: 1;
+            transform: scale(1.2);
         }
 
         /* Панель профилей */
@@ -1135,6 +1229,12 @@
                 min-width: calc(20% - 4px);
             }
             
+            .filter-btn {
+                min-width: calc(50% - 5px);
+                font-size: 0.8rem;
+                padding: 8px 10px;
+            }
+            
             .btn-submit {
                 padding: 15px;
                 font-size: 1.1rem;
@@ -1158,6 +1258,88 @@
 
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-color);
+        }
+
+        /* Статистика */
+        .stats-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .stats-section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #f9f9ff;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #eee;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 700;
+        }
+
+        .stat-positive {
+            color: #4CAF50;
+        }
+
+        .stat-negative {
+            color: #f44336;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: #f0f2ff;
+            border: 2px solid var(--primary-light);
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(106, 90, 205, 0.2);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: var(--primary-light);
+            color: white;
         }
     </style>
 </head>
@@ -1227,6 +1409,13 @@
             </button>
         </div>
 
+        <!-- Вкладки История/Статистика -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="history">📊 История</button>
+            <button class="tab-btn" data-tab="stats">📈 Статистика</button>
+        </div>
+
+        <!-- Форма операции -->
         <div class="operation-form">
             <div class="operation-type">
                 <button class="type-btn active" data-type="income">
@@ -1240,13 +1429,14 @@
                 </button>
             </div>
             
+            <!-- ПОМЕНЯЛИ ПОРЯДОК: сначала причина, потом сумма -->
+            <div class="reason-input">
+                <input type="text" id="reasonInput" placeholder="За что? Например: Помыл посуду">
+            </div>
+            
             <div class="amount-input">
                 <input type="number" id="amountInput" placeholder="Сумма" min="0" step="10">
                 <span class="currency-display" id="currencyDisplay">₽</span>
-            </div>
-            
-            <div class="reason-input">
-                <input type="text" id="reasonInput" placeholder="За что? Например: Помыл посуду">
             </div>
             
             <div class="quick-amounts">
@@ -1262,25 +1452,78 @@
             </button>
         </div>
 
-        <div class="share-section">
-            <button class="btn-share" id="shareBtn">
-                <i class="fas fa-share-alt"></i> Поделиться приложением
-            </button>
-        </div>
-
-        <div class="history-section">
+        <!-- Секция истории -->
+        <div class="history-section active" id="historyTab">
             <h2 class="section-title">
                 <i class="fas fa-history"></i> История операций
-                <button class="btn-clear-history" id="clearHistoryBtn">
-                    <i class="fas fa-trash"></i> Очистить
-                </button>
             </h2>
+            
+            <div class="history-controls">
+                <button class="filter-btn active" data-filter="all">Все</button>
+                <button class="filter-btn" data-filter="week">Неделя</button>
+                <button class="filter-btn" data-filter="month">Месяц</button>
+                <button class="filter-btn" data-filter="year">Год</button>
+            </div>
+            
+            <div class="history-actions">
+                <button class="btn-clear-history" id="clearHistoryBtn">
+                    <i class="fas fa-trash"></i> Очистить всё
+                </button>
+            </div>
+            
             <div class="history-list" id="historyList">
                 <div class="empty-history">
                     <i class="fas fa-book"></i>
                     <p>Здесь будет история операций</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Секция статистики -->
+        <div class="stats-section" id="statsTab">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i> Статистика
+            </h2>
+            
+            <div class="history-controls">
+                <button class="filter-btn active" data-stat-filter="all">Все время</button>
+                <button class="filter-btn" data-stat-filter="week">Неделя</button>
+                <button class="filter-btn" data-stat-filter="month">Месяц</button>
+                <button class="filter-btn" data-stat-filter="year">Год</button>
+            </div>
+            
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-label">Всего заработано</div>
+                    <div class="stat-value stat-positive" id="totalIncome">0 ₽</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Всего потрачено</div>
+                    <div class="stat-value stat-negative" id="totalExpense">0 ₽</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Всего штрафов</div>
+                    <div class="stat-value stat-negative" id="totalPenalty">0 ₽</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Чистый доход</div>
+                    <div class="stat-value" id="netIncome">0 ₽</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Операций</div>
+                    <div class="stat-value" id="totalOperations">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Средняя операция</div>
+                    <div class="stat-value" id="averageOperation">0 ₽</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="share-section">
+            <button class="btn-share" id="shareBtn">
+                <i class="fas fa-share-alt"></i> Поделиться приложением
+            </button>
         </div>
 
         <!-- Панель управления профилями -->
@@ -1357,8 +1600,11 @@
                 this.currentChild = null;
                 this.children = this.loadFromStorage('children') || [];
                 this.operations = this.loadFromStorage('operations') || {};
-                this.penaltyAmount = 100; // Фиксированная сумма штрафа
-                this.currentDino = '🦕'; // Только диплодок
+                this.penaltyAmount = 100;
+                this.currentDino = '🦕';
+                this.currentFilter = 'all';
+                this.currentStatFilter = 'all';
+                this.activeTab = 'history';
                 this.exchangeRates = {
                     RUB: 1,
                     USD: 0.011,
@@ -1380,13 +1626,13 @@
                 this.setupEventListeners();
                 this.loadProfiles();
                 this.updateUI();
+                this.setupKeyboardHide();
             }
             
             checkTelegramMode() {
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.has('tg1')) {
                     document.body.classList.add('tg-mode');
-                    // Устанавливаем правильный шрифт для Telegram
                     document.body.style.fontFamily = "'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif";
                 }
             }
@@ -1471,6 +1717,7 @@
                             this.operations[this.currentChild.id] = [];
                             this.saveToStorage('operations', this.operations);
                             this.updateHistory();
+                            this.updateStats();
                             this.showDinoMessage('История очищена!', 'sad');
                         }
                     }
@@ -1484,6 +1731,69 @@
                 // Поделиться
                 document.getElementById('shareBtn').addEventListener('click', () => {
                     this.shareApp();
+                });
+                
+                // Фильтры истории
+                document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.currentFilter = btn.dataset.filter;
+                        document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.updateHistory();
+                    });
+                });
+                
+                // Фильтры статистики
+                document.querySelectorAll('.filter-btn[data-stat-filter]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.currentStatFilter = btn.dataset.filter;
+                        document.querySelectorAll('.filter-btn[data-stat-filter]').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.updateStats();
+                    });
+                });
+                
+                // Переключение вкладок
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.activeTab = btn.dataset.tab;
+                        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        
+                        // Показываем активную вкладку
+                        document.getElementById('historyTab').classList.remove('active');
+                        document.getElementById('statsTab').classList.remove('active');
+                        document.getElementById(this.activeTab + 'Tab').classList.add('active');
+                        
+                        if (this.activeTab === 'stats') {
+                            this.updateStats();
+                        }
+                    });
+                });
+            }
+            
+            // Скрытие клавиатуры при клике на пустое место
+            setupKeyboardHide() {
+                document.body.addEventListener('click', (e) => {
+                    // Если клик не по полю ввода
+                    if (!e.target.matches('input') && !e.target.matches('textarea')) {
+                        // Скрываем клавиатуру на мобильных устройствах
+                        if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+                            document.activeElement.blur();
+                            
+                            // На iOS нужно дополнительно скрыть клавиатуру
+                            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                                document.activeElement.blur();
+                            }
+                        }
+                    }
+                });
+                
+                // Также скрываем клавиатуру при прокрутке
+                window.addEventListener('scroll', () => {
+                    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+                        document.activeElement.blur();
+                    }
                 });
             }
             
@@ -1691,11 +2001,50 @@
                 
                 this.animateBalanceChange();
                 this.updateHistory();
+                this.updateStats();
                 
                 document.getElementById('bankCard').classList.add('card-bounce');
                 setTimeout(() => {
                     document.getElementById('bankCard').classList.remove('card-bounce');
                 }, 800);
+            }
+            
+            // Удаление отдельной операции
+            deleteOperation(operationId) {
+                if (!this.currentChild || !confirm('Удалить эту операцию?')) {
+                    return;
+                }
+                
+                const childOperations = this.operations[this.currentChild.id];
+                if (childOperations) {
+                    const operationIndex = childOperations.findIndex(op => op.id === operationId);
+                    if (operationIndex !== -1) {
+                        const operation = childOperations[operationIndex];
+                        
+                        // Возвращаем баланс
+                        if (operation.type === 'income') {
+                            this.currentChild.balance = (this.currentChild.balance || 0) - operation.amount;
+                        } else {
+                            this.currentChild.balance = (this.currentChild.balance || 0) + operation.amount;
+                        }
+                        
+                        // Удаляем операцию
+                        childOperations.splice(operationIndex, 1);
+                        this.saveToStorage('operations', this.operations);
+                        
+                        // Обновляем ребенка
+                        const childIndex = this.children.findIndex(c => c.id === this.currentChild.id);
+                        if (childIndex !== -1) {
+                            this.children[childIndex] = this.currentChild;
+                            this.saveToStorage('children', this.children);
+                        }
+                        
+                        this.showDinoMessage('Операция удалена!', 'sad');
+                        this.updateBalanceDisplay();
+                        this.updateHistory();
+                        this.updateStats();
+                    }
+                }
             }
             
             animateBalanceChange() {
@@ -1726,6 +2075,34 @@
                     Math.floor(1000 + Math.random() * 9000);
             }
             
+            // Фильтрация операций по времени
+            filterOperations(operations, filter) {
+                if (!operations || filter === 'all') {
+                    return operations;
+                }
+                
+                const now = new Date();
+                const filtered = operations.filter(operation => {
+                    const opDate = new Date(operation.date);
+                    
+                    switch(filter) {
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            return opDate >= weekAgo;
+                        case 'month':
+                            const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                            return opDate >= monthAgo;
+                        case 'year':
+                            const yearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+                            return opDate >= yearAgo;
+                        default:
+                            return true;
+                    }
+                });
+                
+                return filtered;
+            }
+            
             updateHistory() {
                 const historyList = document.getElementById('historyList');
                 
@@ -1741,8 +2118,19 @@
                 
                 historyList.innerHTML = '';
                 const childOperations = this.operations[this.currentChild.id];
+                const filteredOperations = this.filterOperations(childOperations, this.currentFilter);
                 
-                childOperations.forEach(operation => {
+                if (filteredOperations.length === 0) {
+                    historyList.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-search"></i>
+                            <p>Нет операций за выбранный период</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                filteredOperations.forEach(operation => {
                     const operationDate = new Date(operation.date);
                     const formattedDate = operationDate.toLocaleDateString('ru-RU', {
                         day: 'numeric',
@@ -1766,10 +2154,84 @@
                         <div class="history-amount ${operation.type}">
                             ${operation.type === 'income' ? '+' : '-'}${convertedAmount} ${this.getCurrencySymbol()}
                         </div>
+                        <button class="history-delete-btn" data-id="${operation.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
                     `;
+                    
+                    // Добавляем обработчик удаления
+                    const deleteBtn = historyItem.querySelector('.history-delete-btn');
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.deleteOperation(operation.id);
+                    });
                     
                     historyList.appendChild(historyItem);
                 });
+            }
+            
+            // Обновление статистики
+            updateStats() {
+                if (!this.currentChild || !this.operations[this.currentChild.id]) {
+                    document.getElementById('totalIncome').textContent = '0 ' + this.getCurrencySymbol();
+                    document.getElementById('totalExpense').textContent = '0 ' + this.getCurrencySymbol();
+                    document.getElementById('totalPenalty').textContent = '0 ' + this.getCurrencySymbol();
+                    document.getElementById('netIncome').textContent = '0 ' + this.getCurrencySymbol();
+                    document.getElementById('totalOperations').textContent = '0';
+                    document.getElementById('averageOperation').textContent = '0 ' + this.getCurrencySymbol();
+                    return;
+                }
+                
+                const childOperations = this.operations[this.currentChild.id];
+                const filteredOperations = this.filterOperations(childOperations, this.currentStatFilter);
+                
+                let totalIncome = 0;
+                let totalExpense = 0;
+                let totalPenalty = 0;
+                let totalOperations = filteredOperations.length;
+                
+                filteredOperations.forEach(operation => {
+                    const amount = operation.amount;
+                    if (operation.type === 'income') {
+                        totalIncome += amount;
+                    } else if (operation.type === 'expense') {
+                        totalExpense += amount;
+                    } else if (operation.type === 'penalty') {
+                        totalPenalty += amount;
+                    }
+                });
+                
+                const netIncome = totalIncome - totalExpense - totalPenalty;
+                const averageOperation = totalOperations > 0 ? 
+                    Math.round((totalIncome + totalExpense + totalPenalty) / totalOperations) : 0;
+                
+                // Конвертируем в текущую валюту
+                const convertedTotalIncome = this.convertCurrency(totalIncome);
+                const convertedTotalExpense = this.convertCurrency(totalExpense);
+                const convertedTotalPenalty = this.convertCurrency(totalPenalty);
+                const convertedNetIncome = this.convertCurrency(netIncome);
+                const convertedAverage = this.convertCurrency(averageOperation);
+                
+                document.getElementById('totalIncome').textContent = 
+                    `${convertedTotalIncome.toLocaleString('ru-RU')} ${this.getCurrencySymbol()}`;
+                document.getElementById('totalExpense').textContent = 
+                    `${convertedTotalExpense.toLocaleString('ru-RU')} ${this.getCurrencySymbol()}`;
+                document.getElementById('totalPenalty').textContent = 
+                    `${convertedTotalPenalty.toLocaleString('ru-RU')} ${this.getCurrencySymbol()}`;
+                document.getElementById('netIncome').textContent = 
+                    `${convertedNetIncome.toLocaleString('ru-RU')} ${this.getCurrencySymbol()}`;
+                document.getElementById('totalOperations').textContent = totalOperations.toString();
+                document.getElementById('averageOperation').textContent = 
+                    `${convertedAverage.toLocaleString('ru-RU')} ${this.getCurrencySymbol()}`;
+                
+                // Раскрашиваем чистый доход
+                const netIncomeElement = document.getElementById('netIncome');
+                netIncomeElement.className = 'stat-value';
+                if (netIncome > 0) {
+                    netIncomeElement.classList.add('stat-positive');
+                } else if (netIncome < 0) {
+                    netIncomeElement.classList.add('stat-negative');
+                }
             }
             
             showDinoMessage(message, animation = null) {
@@ -1826,11 +2288,9 @@
                     })
                     .then(() => console.log('Успешно поделились'))
                     .catch((error) => {
-                        // Если пользователь отменил или ошибка, копируем в буфер
                         this.copyToClipboard(appUrl);
                     });
                 } else {
-                    // Для браузеров без поддержки Web Share API
                     this.copyToClipboard(appUrl);
                 }
             }
@@ -1842,7 +2302,6 @@
                     })
                     .catch(err => {
                         console.error('Ошибка копирования: ', err);
-                        // Fallback для старых браузеров
                         const textArea = document.createElement('textarea');
                         textArea.value = text;
                         document.body.appendChild(textArea);
